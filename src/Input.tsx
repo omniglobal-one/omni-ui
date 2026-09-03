@@ -3,7 +3,11 @@ import { cn } from './cn';
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  error?: string;
+  // `| undefined` (not just `?`) so a caller can pass react-hook-form's
+  // `errors.field?.message` (typed `string | undefined`) straight through —
+  // under exactOptionalPropertyTypes, `error?: string` alone rejects an
+  // explicitly-undefined value even though omitting the prop is fine.
+  error?: string | undefined;
 }
 
 /** Label is always visible above the field — never placeholder-as-label

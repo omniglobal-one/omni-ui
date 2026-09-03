@@ -59,6 +59,18 @@ nothing, because Tailwind's default opacity scale has no `8` stop. Fixed
 in `@omni/tokens`'s preset by adding `theme.extend.opacity[8] = '0.08'`,
 not by changing every call site — one fix, all eight products get it.
 
+Rolling this out onto OMNI Pay (the first product wired with
+`react-hook-form`) surfaced a second real bug, this time under
+`exactOptionalPropertyTypes`: `Input`'s `error?: string` rejected
+`error={errors.email?.message}`, because react-hook-form types that as
+`string | undefined` — under this flag, `?: string` means "string, or
+omit the prop entirely," not "string or an explicit `undefined`." Fixed
+in v1.0.7 by widening the prop to `error?: string | undefined`. Any other
+`?: string`/`?: boolean` public prop here (`Dialog`'s `description`,
+`Select`'s `value`/`placeholder`, etc.) is a candidate for the same fix
+the first time a consuming product feeds it a possibly-undefined
+expression rather than a literal.
+
 ## Not yet in this package
 
 - **Storybook / visual test harness.** Worth adding before the rollout in
