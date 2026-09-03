@@ -1,10 +1,15 @@
 import * as React from 'react';
+import { Slot } from '@radix-ui/react-slot';
 import { cn } from './cn';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
+  /** Render the button's classes onto its one child instead of a <button>
+   * — e.g. <Button asChild><Link href="/x">Go</Link></Button> for a Link
+   * that needs to look like the primary action it is. */
+  asChild?: boolean;
 }
 
 /**
@@ -13,8 +18,10 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
  * which are already set to that product's hex before this ever renders.
  */
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = 'primary', className, ...props }, ref) => (
-    <button
+  ({ variant = 'primary', asChild = false, className, ...props }, ref) => {
+    const Comp = asChild ? Slot : 'button';
+    return (
+    <Comp
       ref={ref}
       className={cn(
         'inline-flex items-center gap-2 rounded-sm px-4 py-2 font-sans text-small font-semibold',
@@ -32,6 +39,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       )}
       {...props}
     />
-  ),
+    );
+  },
 );
 Button.displayName = 'Button';
