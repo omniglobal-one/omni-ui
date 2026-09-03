@@ -14,8 +14,13 @@ export interface TabsProps {
 }
 
 export function Tabs({ items, defaultValue }: TabsProps) {
+  const resolvedDefault = defaultValue ?? items[0]?.value;
+  // See Dialog.tsx — exactOptionalPropertyTypes rejects an explicit
+  // defaultValue={undefined} even though the prop itself is optional.
+  const rootProps = resolvedDefault !== undefined ? { defaultValue: resolvedDefault } : {};
+
   return (
-    <RadixTabs.Root defaultValue={defaultValue ?? items[0]?.value}>
+    <RadixTabs.Root {...rootProps}>
       <RadixTabs.List className="flex gap-6 border-b border-omni-border">
         {items.map((item) => (
           <RadixTabs.Trigger

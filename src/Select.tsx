@@ -21,12 +21,20 @@ export interface SelectProps {
  * look, none of shadcn's version of it either. */
 export function Select({ label, options, value, defaultValue, onValueChange, placeholder }: SelectProps) {
   const id = React.useId();
+  // See Dialog.tsx for why this is a conditional spread rather than
+  // value={value} defaultValue={defaultValue} — exactOptionalPropertyTypes.
+  const rootProps = {
+    ...(value !== undefined ? { value } : {}),
+    ...(defaultValue !== undefined ? { defaultValue } : {}),
+    ...(onValueChange !== undefined ? { onValueChange } : {}),
+  };
+
   return (
     <div className="flex flex-col gap-1.5 w-full">
       <label htmlFor={id} className="text-small font-semibold text-omni-ink">
         {label}
       </label>
-      <RadixSelect.Root value={value} defaultValue={defaultValue} onValueChange={onValueChange}>
+      <RadixSelect.Root {...rootProps}>
         <RadixSelect.Trigger
           id={id}
           className={cn(

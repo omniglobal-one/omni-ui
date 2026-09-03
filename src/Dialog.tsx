@@ -37,8 +37,17 @@ export function Dialog({ trigger, open, onOpenChange, title, description, childr
     setDragY(0);
   };
 
+  // Spread conditionally rather than passing open={open}: under
+  // exactOptionalPropertyTypes (Rewards' tsconfig, and a real strict
+  // config other consumers may share), an explicit `open: undefined`
+  // doesn't type-check the same as omitting the prop entirely.
+  const rootProps = {
+    ...(open !== undefined ? { open } : {}),
+    ...(onOpenChange !== undefined ? { onOpenChange } : {}),
+  };
+
   return (
-    <RadixDialog.Root open={open} onOpenChange={onOpenChange}>
+    <RadixDialog.Root {...rootProps}>
       {trigger ? <RadixDialog.Trigger asChild>{trigger}</RadixDialog.Trigger> : null}
       <RadixDialog.Portal>
         <RadixDialog.Overlay className="fixed inset-0 z-50 bg-omni-ink/40 data-[state=open]:animate-in data-[state=open]:fade-in" />

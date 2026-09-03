@@ -6,11 +6,13 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "noEmit": true,
     "paths": {
-      "@omni/tokens": ["../omni-tokens/src/index.js"]
+      "@omni/tokens": ["../omni-tokens/src/index.d.ts"]
     }
   },
   "include": ["src"]

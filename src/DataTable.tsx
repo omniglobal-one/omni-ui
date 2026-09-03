@@ -27,7 +27,13 @@ export interface DataTableProps<T> {
  * them — so there's no resize listener and no server/client mismatch.
  */
 export function DataTable<T>({ columns, rows, rowKey, onRowClick, selectedKeys }: DataTableProps<T>) {
-  const primaryCol = columns.find((c) => c.primary) ?? columns[0];
+  if (columns.length === 0) {
+    throw new Error('DataTable requires at least one column.');
+  }
+  // Non-null: the length check above guarantees columns[0] exists —
+  // noUncheckedIndexedAccess can't see that, so it's asserted here once
+  // instead of forcing every consumer to handle an impossible case.
+  const primaryCol = columns.find((c) => c.primary) ?? columns[0]!;
   const restCols = columns.filter((c) => c !== primaryCol);
 
   return (
