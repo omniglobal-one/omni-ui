@@ -7,6 +7,10 @@ export interface SidebarProps {
   renderLink: (dest: NavDestination, children: React.ReactNode) => React.ReactNode;
   productName: string;
   productLogo?: React.ReactNode;
+  /** Account info, sign-out — whatever a product pins to the bottom.
+   * Almost every real sidebar needs this, so it's part of the shared
+   * component rather than something each pilot hand-rolls around it. */
+  footer?: React.ReactNode;
 }
 
 /**
@@ -15,7 +19,7 @@ export interface SidebarProps {
  * and hover rules, just no label text.
  * Under `sm`: hidden entirely (BottomTabNav takes over).
  */
-export function Sidebar({ destinations, renderLink, productName, productLogo }: SidebarProps) {
+export function Sidebar({ destinations, renderLink, productName, productLogo, footer }: SidebarProps) {
   return (
     <aside className="hidden w-16 shrink-0 flex-col border-r border-omni-border bg-omni-surface sm:flex lg:w-56">
       <div className="flex h-14 items-center gap-2 border-b border-omni-border px-4">
@@ -41,6 +45,7 @@ export function Sidebar({ destinations, renderLink, productName, productLogo }: 
           ),
         )}
       </nav>
+      {footer ? <div className="border-t border-omni-border p-2">{footer}</div> : null}
     </aside>
   );
 }

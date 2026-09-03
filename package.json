@@ -1,6 +1,6 @@
 {
   "name": "@omni/ui",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "The OMNI Standard, component layer — one shared set of buttons, inputs, tables, dialogs, and nav, skinned entirely in @omni/tokens. Radix primitives underneath anything with real interaction logic; no shadcn/Material/Chakra/Mantine skin.",
   "license": "UNLICENSED",
   "private": true,
