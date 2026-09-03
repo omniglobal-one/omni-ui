@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cn } from './cn';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -35,6 +35,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         variant === 'secondary' &&
           'bg-omni-surface text-omni-ink border border-omni-border-strong hover:border-accent hover:text-accent',
         variant === 'ghost' && 'bg-transparent text-omni-ink-soft hover:bg-omni-surface-sunk hover:text-omni-ink',
+        // Semantic (Level 3), not the product accent — a destructive
+        // confirm shouldn't change color depending on which product it's in.
+        variant === 'danger' && 'bg-error text-white hover:bg-error/90',
         className,
       )}
       {...props}
