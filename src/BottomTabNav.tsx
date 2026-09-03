@@ -30,21 +30,30 @@ export function BottomTabNav({ destinations, renderLink }: BottomTabNavProps) {
         'pb-[env(safe-area-inset-bottom)]',
       )}
     >
-      {destinations.slice(0, 5).map((dest) =>
-        renderLink(
-          dest,
-          <div
-            key={dest.key}
-            className={cn(
-              'flex min-w-[44px] flex-1 flex-col items-center justify-center gap-0.5 text-[11px]',
-              dest.active ? 'text-accent' : 'text-omni-ink-faint',
-            )}
-          >
-            <span className="text-[18px] leading-none">{dest.icon}</span>
-            {dest.label}
-          </div>,
-        ),
-      )}
+      {destinations.slice(0, 5).map((dest) => (
+        // flex-1/min-w-0 live on this wrapper, not on whatever renderLink
+        // returns — CSS flex properties only apply to direct children of
+        // the flex container, and renderLink's <Link> is the direct child,
+        // not the styled div passed as its children. The [&>a] rule forces
+        // that <a> (or whatever single element renderLink wraps around
+        // children) to actually fill this column instead of sizing to its
+        // content — without it, a long label like "QR Check-in" doesn't
+        // get a real 44px+ touch target and runs into its neighbor.
+        <div key={dest.key} className="min-w-0 flex-1 [&>a]:flex [&>a]:h-full [&>a]:w-full">
+          {renderLink(
+            dest,
+            <div
+              className={cn(
+                'flex h-full min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-1 text-[11px]',
+                dest.active ? 'text-accent' : 'text-omni-ink-faint',
+              )}
+            >
+              <span className="text-[18px] leading-none">{dest.icon}</span>
+              <span className="w-full truncate text-center leading-tight">{dest.label}</span>
+            </div>,
+          )}
+        </div>
+      ))}
     </nav>
   );
 }
