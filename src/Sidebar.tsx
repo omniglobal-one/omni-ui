@@ -1,0 +1,46 @@
+import * as React from 'react';
+import { cn } from './cn';
+import type { NavDestination } from './BottomTabNav';
+
+export interface SidebarProps {
+  destinations: NavDestination[];
+  renderLink: (dest: NavDestination, children: React.ReactNode) => React.ReactNode;
+  productName: string;
+  productLogo?: React.ReactNode;
+}
+
+/**
+ * Desktop (lg, 1024px+): always expanded, full labels.
+ * Tablet (sm–lg, 640–1023px): collapses to an icon rail — same active-state
+ * and hover rules, just no label text.
+ * Under `sm`: hidden entirely (BottomTabNav takes over).
+ */
+export function Sidebar({ destinations, renderLink, productName, productLogo }: SidebarProps) {
+  return (
+    <aside className="hidden w-16 shrink-0 flex-col border-r border-omni-border bg-omni-surface sm:flex lg:w-56">
+      <div className="flex h-14 items-center gap-2 border-b border-omni-border px-4">
+        {productLogo}
+        <span className="hidden font-display text-h2 font-semibold text-omni-ink lg:inline">{productName}</span>
+      </div>
+      <nav className="flex flex-1 flex-col gap-1 p-2">
+        {destinations.map((dest) =>
+          renderLink(
+            dest,
+            <div
+              key={dest.key}
+              className={cn(
+                'flex min-h-[44px] items-center gap-3 rounded-sm px-3 text-small font-semibold',
+                dest.active
+                  ? 'bg-accent-subtle/8 text-accent'
+                  : 'text-omni-ink-soft hover:bg-omni-surface-sunk hover:text-omni-ink',
+              )}
+            >
+              <span className="text-[16px] leading-none">{dest.icon}</span>
+              <span className="hidden lg:inline">{dest.label}</span>
+            </div>,
+          ),
+        )}
+      </nav>
+    </aside>
+  );
+}
